@@ -1,6 +1,5 @@
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
@@ -18,12 +17,6 @@ public class Shape {
 
 	PVector head;
 	PVector spineBase;
-
-	// boolean morphing = false;
-	// boolean isAlone = true;
-	boolean isSquare = true;
-	boolean isMarried = false;
-	boolean isDivorced = false;
 
 	long timeBorn = System.currentTimeMillis();
 
@@ -53,19 +46,56 @@ public class Shape {
 		this.app = app;
 		// initialization for vertices set
 		initCircle();
-		initSquare();
+		// initSquare();
 	}
 
 	public void draw(boolean b) {
 		app.fill(BLUE.getRGB());
 		// drawShape();
 		if (b)
-			morph(regPolygon(6, 10));
-		else
 			morph(regPolygon(4, 10));
+		else
+			morph(regPolygon(5, 15));
 
 		// morph(sqrSet);
 	}
+	//
+	// public void draw(int state) {
+	// switch (state) {
+	// case -1: // married, left person
+	// // double check
+	// if (isMarried && !isDivorced) {
+	// // should genetrate random color?
+	// app.fill(BABY_PINK.getRGB());
+	// // halfHeart(true); // left heart
+	// } else
+	// System.out.println("Left heart should be displayed");
+	// break;
+	// case 0: // married, right person
+	// if (isMarried && !isDivorced) {
+	// app.fill(HOT_PINK.getRGB());
+	// // halfHeart(false); // left heart
+	// } else
+	// System.out.println("Left heart should be displayed");
+	// break;
+	// case 1: // is alone
+	// app.fill(BLUE.getRGB());
+	// morph(sqrSet); //
+	// break;
+	// case 2: // more than one person
+	// if (!isMarried || isDivorced) { // single
+	// app.fill(BABY_PINK.getRGB());
+	// morph(crclSet);
+	// }
+	// break;
+	// case 3:
+	// if (isDivorced && !isMarried) {
+	// app.fill(BLUE.getRGB());
+	// morph(crclSet);
+	// }
+	// break;
+	// }
+	// }
 
 	// https://processing.org/examples/morph.html
 	public void morph(ArrayList<PVector> vertices) {
@@ -141,43 +171,6 @@ public class Shape {
 		// }
 	}
 
-	public void draw(int state) {
-		switch (state) {
-		case -1: // married, left person
-			// double check
-			if (isMarried && !isDivorced) {
-				// should genetrate random color?
-				app.fill(BABY_PINK.getRGB());
-				// halfHeart(true); // left heart
-			} else
-				System.out.println("Left heart should be displayed");
-			break;
-		case 0: // married, right person
-			if (isMarried && !isDivorced) {
-				app.fill(HOT_PINK.getRGB());
-				// halfHeart(false); // left heart
-			} else
-				System.out.println("Left heart should be displayed");
-			break;
-		case 1: // is alone
-			app.fill(BLUE.getRGB());
-			morph(sqrSet); //
-			break;
-		case 2: // more than one person
-			if (!isMarried || isDivorced) { // single
-				app.fill(BABY_PINK.getRGB());
-				morph(crclSet);
-			}
-			break;
-		case 3:
-			if (isDivorced && !isMarried) {
-				app.fill(BLUE.getRGB());
-				morph(crclSet);
-			}
-			break;
-		}
-	}
-
 	/**
 	 * Creates a circle using vectors pointing from center
 	 */
@@ -191,24 +184,6 @@ public class Shape {
 			// fill out morph ArrayList with blank PVectors
 			morphSet.add(new PVector());
 		}
-	}
-
-	/**
-	 * Creates a square by using a bunch of vertices along straight lines
-	 */
-	public void initSquare() {
-		// Top of square
-		for (int x = -20; x < 20; x += 4)
-			sqrSet.add(new PVector(x, -20));
-		// Right side
-		for (int y = -20; y < 20; y += 4)
-			sqrSet.add(new PVector(20, y));
-		// Bottom
-		for (int x = 20; x > -20; x -= 4)
-			sqrSet.add(new PVector(x, 20));
-		// Left side
-		for (int y = 20; y > -20; y -= 4)
-			sqrSet.add(new PVector(-20, y));
 	}
 
 	public void drawShape(ArrayList<PVector> vSet) {
@@ -239,12 +214,11 @@ public class Shape {
 		PVector vertex = new PVector(0, -rad);
 		points.add(vertex);
 		double rot = 2 * Math.PI / nPoints;
-		for (int i = 1; i <= 6; i += 1) {
+		for (int i = 1; i < 6; i += 1) {
 			PVector next = getRotate(vertex, rot);
 			points.add(next);
 			vertex = next;
 		}
-		// System.out.println(points.size());
 		return points;
 	}
 

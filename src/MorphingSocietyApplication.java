@@ -65,7 +65,7 @@ public class MorphingSocietyApplication extends PApplet {
 	}
 
 	public void settings() {
-		createWindow(true, false, .25f);
+		createWindow(true, true, .25f);
 	}
 
 	public void createWindow(boolean useP2D, boolean isFullscreen, float windowsScale) {
