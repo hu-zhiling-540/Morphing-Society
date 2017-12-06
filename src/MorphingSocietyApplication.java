@@ -40,9 +40,9 @@ public class MorphingSocietyApplication extends PApplet {
 			if (s != null) {
 				s.update(b);
 				if (population == 1)
-					s.draw(true);
+					s.draw(1);
 				else
-					s.draw(false);
+					s.draw(population);
 			}
 		}
 
@@ -65,7 +65,7 @@ public class MorphingSocietyApplication extends PApplet {
 	}
 
 	public void settings() {
-		createWindow(true, true, .25f);
+		createWindow(true, false, .25f);
 	}
 
 	public void createWindow(boolean useP2D, boolean isFullscreen, float windowsScale) {
