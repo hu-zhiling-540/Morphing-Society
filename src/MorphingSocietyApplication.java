@@ -39,10 +39,7 @@ public class MorphingSocietyApplication extends PApplet {
 			Shape s = society.get(b.getId());
 			if (s != null) {
 				s.update(b);
-				if (population == 1)
-					s.draw(1);
-				else
-					s.draw(population);
+				s.draw(population);
 			}
 		}
 

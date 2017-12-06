@@ -42,7 +42,7 @@ public class Shape {
 	PVector[] triangle;
 	PVector[] circle;
 	PVector[] currShape;
-	
+
 	int maxSize = 600;
 	int rad = 50;
 	public static final Color BABY_PINK = new Color(255, 182, 193);
@@ -59,14 +59,14 @@ public class Shape {
 
 		// initSquare();
 		heptagon = setupPolygon(7, maxSize, rad);
-//		hextagon = setupPolygon(6, maxSize, rad);
-//		circle = new PVector[maxSize];
+		// hextagon = setupPolygon(6, maxSize, rad);
+		// circle = new PVector[maxSize];
 		// circle = setupPolygon(0, maxSize, rad);
 		// pentagon = setupPolygon(5, maxSize, rad);
 		// square = setupPolygon(4, maxSize, rad);
 		// triangle = setupPolygon(3, maxSize, rad);
 		// initialization for vertices set
-//		initCircle();
+		// initCircle();
 		currShape = new PVector[maxSize];
 		currShape = heptagon;
 	}
@@ -128,7 +128,7 @@ public class Shape {
 
 	public void update(Body body) {
 		this.body = body;
-		
+
 		head = body.getJoint(Body.HEAD);
 		spineBase = body.getJoint(Body.SPINE_BASE);
 		if (head != null && spineBase != null) {
@@ -144,44 +144,24 @@ public class Shape {
 				square = setupPolygon(4, maxSize, rad);
 				triangle = setupPolygon(3, maxSize, rad);
 			}
-
 		}
+	}
 
-		// // if married stated
-		// if (isMarried) {
-		// text = "We fall in love!";
-		// newTraces.add(new PVector(centerX, centerY));
-		// if (newTraces.size() > 20) // have been together for a long time
-		// text = "I love you so much.";
-		// if (newTraces.size() > 80) // have been together for a long long time
-		// text = "I love you so so much.";
-		// // just got married
-		// if (this.isMarried != isMarried) {
-		// this.isDivorced = false;
-		// // if never married to this person
-		// if (!marriedTo.contains(partnerId)) {
-		// marriedTo.add(partnerId);
-		// newTraces = new ArrayList<PVector>();
-		// } else // married to the same person again
-		// text = "Can't believe we fall in love again!"; // override the displaying
-		// text
-		// }
-		// } else if (isDivorced) {
-		// if (newTraces.size() <= 10) // Just break up
-		// text = "We should take a break.";
-		// else // return to the game
-		// text = "Single.";
-		// // just got divorced
-		// if (this.isDivorced != isDivorced) {
-		// this.isDivorced = isDivorced;
-		// this.isMarried = false;
-		// // remember all the traces being together
-		// exTraces = newTraces;
-		// newTraces = new ArrayList<PVector>(); // record new traces until meeting the
-		// next partner
-		// }
-		// newTraces.add(new PVector(centerX, centerY));
-		// }
+	public void drawShape(ArrayList<PVector> vSet) {
+		app.noStroke();
+		app.pushMatrix();
+		PShape s = app.createShape();
+		// draw relative to the center of this person
+		app.translate(centerX, centerY);
+		s.beginShape();
+		s.scale(.05f, .05f);
+		// shape drawing
+		for (PVector v : vSet)
+			s.vertex(v.x, v.y);
+		s.endShape(PConstants.CLOSE);
+		// create this shape in its parent pApplet
+		app.shape(s);
+		app.popMatrix();
 	}
 
 	/**
@@ -253,55 +233,6 @@ public class Shape {
 		if (u < 0 || u > 1)
 			return null;
 		return new PVector(p1.x + t * b.x, p1.y + t * b.y);
-	}
-
-	public void drawShape(ArrayList<PVector> vSet) {
-		app.noStroke();
-		app.pushMatrix();
-		PShape s = app.createShape();
-		// draw relative to the center of this person
-		app.translate(centerX, centerY);
-		s.beginShape();
-		s.scale(.05f, .05f);
-		// shape drawing
-		for (PVector v : vSet)
-			s.vertex(v.x, v.y);
-		s.endShape(PConstants.CLOSE);
-		// create this shape in its parent pApplet
-		app.shape(s);
-		app.popMatrix();
-	}
-
-	public static PVector getRotate(PVector vec, double theta) {
-		float x = (float) (vec.x * Math.cos(theta) - vec.y * Math.sin(theta));
-		float y = (float) (vec.x * Math.sin(theta) + vec.y * Math.cos(theta));
-		return new PVector(x, y);
-	}
-
-	public ArrayList<PVector> regPolygon(int nPoints, float rad) {
-		ArrayList<PVector> points = new ArrayList<PVector>();
-		PVector vertex = new PVector(0, -rad);
-		points.add(vertex);
-		double rot = 2 * Math.PI / nPoints;
-		for (int i = 1; i < 6; i += 1) {
-			PVector next = getRotate(vertex, rot);
-			points.add(next);
-			vertex = next;
-		}
-		return points;
-	}
-
-	public ArrayList<PVector> regPolygon(int npoints) {
-		float angle = PConstants.TWO_PI / npoints;
-		ArrayList<PVector> vSet = new ArrayList<PVector>();
-		float rad = 1f;
-		for (float a = 0; a < PConstants.TWO_PI; a += angle) {
-			float sx = centerX + PApplet.cos(a) * rad;
-			float sy = centerY + PApplet.sin(a) * rad;
-			// app.vertex(sx, sy);
-			vSet.add(new PVector(sx, sy));
-		}
-		return vSet;
 	}
 
 }
