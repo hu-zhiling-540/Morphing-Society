@@ -10,17 +10,18 @@ public class Shape {
 
 	Body body;
 	PApplet app;
-	int color;
-
-	float centerX;
-	float centerY;
+	// int color;
 
 	PVector head;
 	PVector spineBase;
 
+	float centerX; // location based on the center
+	float centerY;
+
 	long timeBorn;
 
-	float angle = 0;
+	float mass = 50; // radius
+	// float angle = 0;
 	float aVelocity = 0;
 	float aAcceleration = 0;
 
@@ -44,7 +45,7 @@ public class Shape {
 	PVector[] currShape;
 
 	int maxSize = 600;
-	int rad = 50;
+
 	public static final Color BABY_PINK = new Color(255, 182, 193);
 	public static final Color HOT_PINK = new Color(255, 105, 180);
 	public static final Color BLUE = new Color(168, 111, 186);
@@ -57,14 +58,13 @@ public class Shape {
 		this.app = app;
 		timeBorn = System.currentTimeMillis();
 
-		// initSquare();
-		heptagon = setupPolygon(7, maxSize, rad);
-		// hextagon = setupPolygon(6, maxSize, rad);
+		heptagon = setupPolygon(7, maxSize, mass);
+		// hextagon = setupPolygon(6, maxSize, mass);
 		// circle = new PVector[maxSize];
-		// circle = setupPolygon(0, maxSize, rad);
-		// pentagon = setupPolygon(5, maxSize, rad);
-		// square = setupPolygon(4, maxSize, rad);
-		// triangle = setupPolygon(3, maxSize, rad);
+		// circle = setupPolygon(0, maxSize, mass);
+		// pentagon = setupPolygon(5, maxSize, mass);
+		// square = setupPolygon(4, maxSize, mass);
+		// triangle = setupPolygon(3, maxSize, mass);
 		// initialization for vertices set
 		// initCircle();
 		currShape = new PVector[maxSize];
@@ -87,6 +87,7 @@ public class Shape {
 		PShape s = app.createShape();
 		s.beginShape();
 		s.scale(.01f, .01f);
+		s.rotate((float) (app.frameCount / mass));
 		// draw relative to the center of this person
 		app.translate(centerX, centerY);
 		for (PVector v : currShape) // drawing shape
@@ -98,29 +99,33 @@ public class Shape {
 	}
 
 	public void draw(int state) {
+
+		// use frameCount and noise to change the red color component
+		float r = app.noise((float) (app.frameCount * 0.01)) * 255;
+		// use frameCount and modulo to change the green color component
+		float g = app.frameCount % 255;
+		// use frameCount and noise to change the blue color component
+		float b = 255 - app.noise((float) (1 + app.frameCount * 0.025)) * 255;
+		int color = app.color(r, g, b);
+		app.fill(color);
+
 		switch (state) {
 		case 1: // is alone
-			app.fill(BLUE.getRGB());
 			morph(heptagon); //
 			break;
 		case 2: // two people
-			app.fill(BLUE.getRGB());
 			morph(hextagon); //
 			break;
 		case 3: // three people
-			app.fill(BABY_PINK.getRGB());
 			morph(pentagon);
 			break;
 		case 4: // four people
-			app.fill(BLUE.getRGB());
 			morph(square);
 			break;
 		case 5: // five people
-			app.fill(BLUE.getRGB());
 			morph(triangle);
 			break;
 		case 6: // six people
-			app.fill(BLUE.getRGB());
 			morph(circle);
 			break;
 		}
@@ -128,23 +133,24 @@ public class Shape {
 
 	public void update(Body body) {
 		this.body = body;
-
+		// System.currentTimeMillis()
 		head = body.getJoint(Body.HEAD);
 		spineBase = body.getJoint(Body.SPINE_BASE);
 		if (head != null && spineBase != null) {
-			// System.out.println(rad);
+			// System.out.println(mass);
 			centerX = spineBase.x;
 			centerY = spineBase.y;
 			int newRad = (int) (head.dist(spineBase) * 50); // update radius
-			if (Math.abs(newRad - rad) >= 2) {
-				rad = newRad;
-				heptagon = setupPolygon(7, maxSize, rad);
-				hextagon = setupPolygon(6, maxSize, rad);
-				pentagon = setupPolygon(5, maxSize, rad);
-				square = setupPolygon(4, maxSize, rad);
-				triangle = setupPolygon(3, maxSize, rad);
+			if (Math.abs(newRad - mass) >= 2) {
+				mass = newRad;
+				heptagon = setupPolygon(7, maxSize, mass);
+				hextagon = setupPolygon(6, maxSize, mass);
+				pentagon = setupPolygon(5, maxSize, mass);
+				square = setupPolygon(4, maxSize, mass);
+				triangle = setupPolygon(3, maxSize, mass);
 			}
 		}
+
 	}
 
 	public void drawShape(ArrayList<PVector> vSet) {
@@ -182,7 +188,7 @@ public class Shape {
 		}
 	}
 
-	public PVector[] setupPolygon(int sides, int spokes, int radius) {
+	public PVector[] setupPolygon(int sides, int spokes, float rad) {
 		PVector[] v; // all spokes from origin
 		PVector[] spoke; // spokes to each corner ie used spokes
 		PVector origin = new PVector(0, 0);
@@ -196,13 +202,13 @@ public class Shape {
 
 		for (int i = 0; i < sides; i++) { // set up n used spokes
 			spoke[i] = PVector.fromAngle(theta * i);
-			spoke[i].setMag(radius);
+			spoke[i].setMag(rad);
 		}
 		spoke[sides] = spoke[0]; // to loop around
 
 		for (int i = 0; i < spokes; i++) { // set up spokes non used spokes
 			v[i] = PVector.fromAngle(thetaSpokes * i);
-			v[i].setMag(radius); // ful length so overlaps side
+			v[i].setMag(rad); // ful length so overlaps side
 			// // if current angle past current used spoke, move on
 			// to next spoke
 			if ((i * thetaSpokes) > (currentSpoke * theta))
