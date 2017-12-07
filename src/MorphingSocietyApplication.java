@@ -51,18 +51,18 @@ public class MorphingSocietyApplication extends PApplet {
 		 * use this code to run your PApplet from data recorded by UPDRecorder
 		 */
 		try {
-			kinectReader = new KinectBodyDataProvider("exitTest.kinect", 2);
+			kinectReader = new KinectBodyDataProvider("singlePersonTest.kinect", 2);
 		} catch (IOException e) {
 			System.out.println("Unable to create kinect producer");
 		}
 
-		// kinectReader = new KinectBodyDataProvider(8008);
+//		kinectReader = new KinectBodyDataProvider(8008);
 		kinectReader.start();
 
 	}
 
 	public void settings() {
-		createWindow(true, false, .25f);
+		createWindow(true, true, .25f);
 	}
 
 	public void createWindow(boolean useP2D, boolean isFullscreen, float windowsScale) {

@@ -42,8 +42,7 @@ public class UDPRecorder {
 	}
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
-		new UDPRecorder("exitTest.kinect", 8008, 15000).record();
-		;
+		new UDPRecorder("manyTest.kinect", 8008, 60000).record();
 	}
 
 }

@@ -19,23 +19,23 @@ public class Shape {
 	float centerY;
 
 	long timeBorn;
-
+	// long layover = 1; // in seconds
+	float rotSpeed;
+	float decel = 10; // deceleration
+	// float minSpeed = (float) 0.1;
 	float mass = 50; // radius
 	// float angle = 0;
 	float aVelocity = 0;
 	float aAcceleration = 0;
 
-	// store the vertices for shapes
-	ArrayList<PVector> crclSet = new ArrayList<PVector>();
-	ArrayList<PVector> sqrSet = new ArrayList<PVector>();
 	// store the vertices that been lerped to
-	ArrayList<PVector> morphSet = new ArrayList<PVector>();
+	// ArrayList<PVector> morphSet = new ArrayList<PVector>();
 
 	// to store all the locations past by until meeting that married person
 	ArrayList<PVector> exTraces = new ArrayList<PVector>();
 	ArrayList<PVector> newTraces = new ArrayList<PVector>();
 
-	// potential shapes
+	// potential shapes represented by fixed size of vertices
 	PVector[] heptagon;
 	PVector[] hextagon;
 	PVector[] pentagon;
@@ -71,6 +71,38 @@ public class Shape {
 		currShape = heptagon;
 	}
 
+	public void update(Body body) {
+		this.body = body;
+
+		// float ac = (float) (Math.abs(PApplet.sin(app.frameCount / 100f) * 0.2));
+		// rotSpeed += ac;
+
+		// ease out rotSpeed speed
+		rotSpeed = app.frameCount / -200; // constant rotation speed
+		if (decel > 0) {
+			decel -= 1;
+			rotSpeed += decel;
+		}
+		System.out.println(rotSpeed);
+
+		head = body.getJoint(Body.HEAD);
+		spineBase = body.getJoint(Body.SPINE_BASE);
+		if (head != null && spineBase != null) {
+			// System.out.println(mass);
+			centerX = spineBase.x;
+			centerY = spineBase.y;
+			int newRad = (int) (head.dist(spineBase) * 50); // update radius
+			if (Math.abs(newRad - mass) >= 2) {
+				mass = newRad;
+				heptagon = setupPolygon(7, maxSize, mass);
+				hextagon = setupPolygon(6, maxSize, mass);
+				pentagon = setupPolygon(5, maxSize, mass);
+				square = setupPolygon(4, maxSize, mass);
+				triangle = setupPolygon(3, maxSize, mass);
+			}
+		}
+	}
+
 	// ref: https://processing.org/examples/morph.html
 	public void morph(PVector[] nextShape) {
 		// app.fill(BLUE.getRGB());
@@ -85,9 +117,10 @@ public class Shape {
 		}
 		app.pushMatrix();
 		PShape s = app.createShape();
+		s.rotate(rotSpeed);
 		s.beginShape();
 		s.scale(.01f, .01f);
-		s.rotate((float) (app.frameCount / mass));
+
 		// draw relative to the center of this person
 		app.translate(centerX, centerY);
 		for (PVector v : currShape) // drawing shape
@@ -129,28 +162,6 @@ public class Shape {
 			morph(circle);
 			break;
 		}
-	}
-
-	public void update(Body body) {
-		this.body = body;
-		// System.currentTimeMillis()
-		head = body.getJoint(Body.HEAD);
-		spineBase = body.getJoint(Body.SPINE_BASE);
-		if (head != null && spineBase != null) {
-			// System.out.println(mass);
-			centerX = spineBase.x;
-			centerY = spineBase.y;
-			int newRad = (int) (head.dist(spineBase) * 50); // update radius
-			if (Math.abs(newRad - mass) >= 2) {
-				mass = newRad;
-				heptagon = setupPolygon(7, maxSize, mass);
-				hextagon = setupPolygon(6, maxSize, mass);
-				pentagon = setupPolygon(5, maxSize, mass);
-				square = setupPolygon(4, maxSize, mass);
-				triangle = setupPolygon(3, maxSize, mass);
-			}
-		}
-
 	}
 
 	public void drawShape(ArrayList<PVector> vSet) {
