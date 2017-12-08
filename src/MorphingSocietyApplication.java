@@ -25,8 +25,8 @@ public class MorphingSocietyApplication extends PApplet {
 	public void draw() {
 		setScale(.5f);
 		background(255, 227, 235); // baby pink;
-		// KinectBodyData bodyData = kinectReader.getData();
-		KinectBodyData bodyData = kinectReader.getMostRecentData();
+		KinectBodyData bodyData = kinectReader.getData();
+		// KinectBodyData bodyData = kinectReader.getMostRecentData();
 		pTracker.update(bodyData);
 		for (Long id : pTracker.getEnters()) {
 			society.put(id, new Shape(this));
@@ -42,7 +42,6 @@ public class MorphingSocietyApplication extends PApplet {
 				s.draw(population);
 			}
 		}
-
 	}
 
 	public void setup() {
@@ -51,18 +50,18 @@ public class MorphingSocietyApplication extends PApplet {
 		 * use this code to run your PApplet from data recorded by UPDRecorder
 		 */
 		try {
-			kinectReader = new KinectBodyDataProvider("singlePersonTest.kinect", 2);
+			kinectReader = new KinectBodyDataProvider("sixPeople.kinect", 1);
 		} catch (IOException e) {
 			System.out.println("Unable to create kinect producer");
 		}
 
-//		kinectReader = new KinectBodyDataProvider(8008);
+		// kinectReader = new KinectBodyDataProvider(8008);
 		kinectReader.start();
 
 	}
 
 	public void settings() {
-		createWindow(true, true, .25f);
+		createWindow(true, false, .25f);
 	}
 
 	public void createWindow(boolean useP2D, boolean isFullscreen, float windowsScale) {

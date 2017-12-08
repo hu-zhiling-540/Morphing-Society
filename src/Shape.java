@@ -20,8 +20,8 @@ public class Shape {
 
 	long timeBorn;
 	// long layover = 1; // in seconds
-	float rotSpeed;
-	float decel = 10; // deceleration
+	float rotSpeed = (float) 0;
+	float decel = (float) 0.2; // deceleration
 	// float minSpeed = (float) 0.1;
 	float mass = 50; // radius
 	// float angle = 0;
@@ -34,6 +34,10 @@ public class Shape {
 	// to store all the locations past by until meeting that married person
 	ArrayList<PVector> exTraces = new ArrayList<PVector>();
 	ArrayList<PVector> newTraces = new ArrayList<PVector>();
+
+	int num = 20;
+	float mx[] = new float[num];
+	float my[] = new float[num];
 
 	// potential shapes represented by fixed size of vertices
 	PVector[] heptagon;
@@ -74,15 +78,10 @@ public class Shape {
 	public void update(Body body) {
 		this.body = body;
 
-		// float ac = (float) (Math.abs(PApplet.sin(app.frameCount / 100f) * 0.2));
-		// rotSpeed += ac;
-
 		// ease out rotSpeed speed
-		rotSpeed = app.frameCount / -200; // constant rotation speed
-		if (decel > 0) {
-			decel -= 1;
-			rotSpeed += decel;
-		}
+		if (decel > 0.01)
+			decel -= 0.001;
+		rotSpeed += decel;
 		System.out.println(rotSpeed);
 
 		head = body.getJoint(Body.HEAD);
@@ -101,6 +100,14 @@ public class Shape {
 				triangle = setupPolygon(3, maxSize, mass);
 			}
 		}
+	}
+
+	public void speedUp() {
+
+	}
+
+	public void speedDown() {
+
 	}
 
 	// ref: https://processing.org/examples/morph.html
@@ -129,6 +136,33 @@ public class Shape {
 		// create this shape in its parent pApplet
 		app.shape(s);
 		app.popMatrix();
+	}
+
+	public void traces() {
+		app.stroke(255, 153);
+		app.noFill();
+		int which = app.frameCount % num;
+		mx[which] = centerX;
+		my[which] = centerY;
+		for (int i = 0; i < num; i++) {
+			// which+1 is the smallest (the oldest in the array)
+			int index = (which + 1 + i) % num;
+			// app.scale(0.1f);
+			// app.ellipse(mx[index], my[index], i, i);
+			// app.pushMatrix();
+			PShape s = app.createShape();
+			s.rotate(rotSpeed);
+			s.beginShape();
+			s.scale(.009f, .009f);
+			// draw relative to the center of this person
+			app.translate(mx[index], my[index]);
+			for (PVector v : currShape) // drawing shape
+				s.vertex(v.x, v.y);
+			s.endShape(PApplet.CLOSE);
+			// create this shape in its parent pApplet
+			app.shape(s);
+			// app.popMatrix();
+		}
 	}
 
 	public void draw(int state) {
