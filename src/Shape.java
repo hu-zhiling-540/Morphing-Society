@@ -35,7 +35,7 @@ public class Shape {
 	ArrayList<PVector> exTraces = new ArrayList<PVector>();
 	ArrayList<PVector> newTraces = new ArrayList<PVector>();
 
-	int num = 20;
+	int num = 10;
 	float mx[] = new float[num];
 	float my[] = new float[num];
 
@@ -139,29 +139,31 @@ public class Shape {
 	}
 
 	public void traces() {
-		app.stroke(255, 153);
-		app.noFill();
+		app.noStroke();
+//		app.fill(255, 153); 
 		int which = app.frameCount % num;
 		mx[which] = centerX;
 		my[which] = centerY;
 		for (int i = 0; i < num; i++) {
 			// which+1 is the smallest (the oldest in the array)
 			int index = (which + 1 + i) % num;
-			// app.scale(0.1f);
-			// app.ellipse(mx[index], my[index], i, i);
-			// app.pushMatrix();
-			PShape s = app.createShape();
-			s.rotate(rotSpeed);
-			s.beginShape();
-			s.scale(.009f, .009f);
-			// draw relative to the center of this person
 			app.translate(mx[index], my[index]);
-			for (PVector v : currShape) // drawing shape
-				s.vertex(v.x, v.y);
-			s.endShape(PApplet.CLOSE);
+			PShape s = app.createShape(PApplet.ELLIPSE, mx[index], my[index], i, i);
+			s.scale(.01f, .01f);
+
 			// create this shape in its parent pApplet
+			// app.shape(s);
+			// PShape s = app.createShape();
+			// s.rotate(rotSpeed);
+			// s.beginShape();
+			// s.scale(.009f, .009f);
+			// // draw relative to the center of this person
+			// app.translate(mx[index], my[index]);
+			// for (PVector v : currShape) // drawing shape
+			// s.vertex(v.x, v.y);
+			// s.endShape(PApplet.CLOSE);
+			// // create this shape in its parent pApplet
 			app.shape(s);
-			// app.popMatrix();
 		}
 	}
 
@@ -196,6 +198,7 @@ public class Shape {
 			morph(circle);
 			break;
 		}
+
 	}
 
 	public void drawShape(ArrayList<PVector> vSet) {

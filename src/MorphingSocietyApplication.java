@@ -4,10 +4,6 @@ import java.util.HashMap;
 import processing.core.PApplet;
 
 /**
- * 
- */
-
-/**
  * @author Zhiling
  *
  */
@@ -24,7 +20,7 @@ public class MorphingSocietyApplication extends PApplet {
 
 	public void draw() {
 		setScale(.5f);
-		background(255, 227, 235); // baby pink;
+		background(105, 105, 105); // baby pink;
 		KinectBodyData bodyData = kinectReader.getData();
 		// KinectBodyData bodyData = kinectReader.getMostRecentData();
 		pTracker.update(bodyData);
@@ -50,7 +46,7 @@ public class MorphingSocietyApplication extends PApplet {
 		 * use this code to run your PApplet from data recorded by UPDRecorder
 		 */
 		try {
-			kinectReader = new KinectBodyDataProvider("sixPeople.kinect", 1);
+			kinectReader = new KinectBodyDataProvider("fivePeople.kinect", 1);
 		} catch (IOException e) {
 			System.out.println("Unable to create kinect producer");
 		}
@@ -61,7 +57,7 @@ public class MorphingSocietyApplication extends PApplet {
 	}
 
 	public void settings() {
-		createWindow(true, false, .25f);
+		createWindow(true, true, .25f);
 	}
 
 	public void createWindow(boolean useP2D, boolean isFullscreen, float windowsScale) {
