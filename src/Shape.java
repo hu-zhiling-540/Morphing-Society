@@ -12,18 +12,16 @@ public class Shape {
 	PApplet app;
 	// int color;
 
-	PVector head;
-	PVector spineBase;
+	PVector head, spineBase;
 
-	float centerX; // location based on the center
-	float centerY;
+	float centerX, centerY;
 
 	long timeBorn;
 	// long layover = 1; // in seconds
 	float rotSpeed = (float) 0;
 	float decel = (float) 0.2; // deceleration
 	// float minSpeed = (float) 0.1;
-	float mass = 50; // radius
+	float mass = 30; // radius
 	// float angle = 0;
 	float aVelocity = 0;
 	float aAcceleration = 0;
@@ -35,10 +33,12 @@ public class Shape {
 	ArrayList<PVector> exTraces = new ArrayList<PVector>();
 	ArrayList<PVector> newTraces = new ArrayList<PVector>();
 
-	int num = 10;
+	int num = 5;
 	float mx[] = new float[num];
 	float my[] = new float[num];
 
+	HelloWorld[] hws = new HelloWorld[10];
+	int totalHws = 0;
 	// potential shapes represented by fixed size of vertices
 	PVector[] heptagon;
 	PVector[] hextagon;
@@ -82,7 +82,7 @@ public class Shape {
 		if (decel > 0.01)
 			decel -= 0.001;
 		rotSpeed += decel;
-		System.out.println(rotSpeed);
+		// System.out.println(rotSpeed);
 
 		head = body.getJoint(Body.HEAD);
 		spineBase = body.getJoint(Body.SPINE_BASE);
@@ -90,8 +90,8 @@ public class Shape {
 			// System.out.println(mass);
 			centerX = spineBase.x;
 			centerY = spineBase.y;
-			int newRad = (int) (head.dist(spineBase) * 50); // update radius
-			if (Math.abs(newRad - mass) >= 2) {
+			float newRad = head.dist(spineBase) * 30; // update radius
+			if (Math.abs(newRad - mass) >= 0.5) {
 				mass = newRad;
 				heptagon = setupPolygon(7, maxSize, mass);
 				hextagon = setupPolygon(6, maxSize, mass);
@@ -112,8 +112,6 @@ public class Shape {
 
 	// ref: https://processing.org/examples/morph.html
 	public void morph(PVector[] nextShape) {
-		// app.fill(BLUE.getRGB());
-		// app.noFill();
 		app.noStroke();
 		for (int i = 0; i < maxSize; i++) {
 			PVector v1 = nextShape[i];
@@ -138,9 +136,16 @@ public class Shape {
 		app.popMatrix();
 	}
 
+	public void jiggle(float speed) {
+		float x = centerX + app.random(-1, 1) * speed;
+		float y = centerX + app.random(-1, 1) * speed;
+		x = PApplet.constrain(x, 0, app.width);
+		y = PApplet.constrain(y, 0, app.height);
+	}
+
 	public void traces() {
 		app.noStroke();
-//		app.fill(255, 153); 
+		// app.fill(255, 153);
 		int which = app.frameCount % num;
 		mx[which] = centerX;
 		my[which] = centerY;
@@ -168,6 +173,24 @@ public class Shape {
 	}
 
 	public void draw(int state) {
+
+		// Initialize one drop
+		hws[totalHws] = new HelloWorld(app, centerX, centerY, mass);
+
+		// Increment totalDrops
+		totalHws++;
+
+		// If we hit the end of the array
+		if (totalHws >= hws.length) {
+			totalHws = 0; // Start over
+		}
+
+		// Move and display drops
+		for (int i = 0; i < totalHws; i++) { // New! We no longer move and display all drops, but rather only the
+												// “totalDrops” that are currently present in the game.
+			hws[i].move();
+			hws[i].display();
+		}
 
 		// use frameCount and noise to change the red color component
 		float r = app.noise((float) (app.frameCount * 0.01)) * 255;

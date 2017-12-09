@@ -14,13 +14,20 @@ public class MorphingSocietyApplication extends PApplet {
 	HashMap<Long, Shape> society = new HashMap<Long, Shape>();
 	PersonTracker pTracker = new PersonTracker();
 
-	public static void main(String[] args) {
-		PApplet.main(MorphingSocietyApplication.class.getName());
-	}
+	int cols = 10;
+	int rows = 10;
+	float border = 20;
+	float colSize = (width - border * 2 - 1) / cols;
+	float rowSize = (height - border * 2 - 1) / rows;
+
+	boolean squares[] = new boolean[rows * cols];
 
 	public void draw() {
 		setScale(.5f);
-		background(105, 105, 105); // baby pink;
+		// background(105, 105, 105);
+
+		background(0);
+
 		KinectBodyData bodyData = kinectReader.getData();
 		// KinectBodyData bodyData = kinectReader.getMostRecentData();
 		pTracker.update(bodyData);
@@ -38,6 +45,7 @@ public class MorphingSocietyApplication extends PApplet {
 				s.draw(population);
 			}
 		}
+
 	}
 
 	public void setup() {
@@ -46,6 +54,7 @@ public class MorphingSocietyApplication extends PApplet {
 		 * use this code to run your PApplet from data recorded by UPDRecorder
 		 */
 		try {
+//			kinectReader = new KinectBodyDataProvider("singlePersonTest.kinect", 1);
 			kinectReader = new KinectBodyDataProvider("fivePeople.kinect", 1);
 		} catch (IOException e) {
 			System.out.println("Unable to create kinect producer");
@@ -53,11 +62,12 @@ public class MorphingSocietyApplication extends PApplet {
 
 		// kinectReader = new KinectBodyDataProvider(8008);
 		kinectReader.start();
-
+		 frameRate(20);
 	}
 
 	public void settings() {
 		createWindow(true, true, .25f);
+
 	}
 
 	public void createWindow(boolean useP2D, boolean isFullscreen, float windowsScale) {
@@ -81,6 +91,10 @@ public class MorphingSocietyApplication extends PApplet {
 	public void setScale(float zoom) {
 		scale(zoom * width / 2.0f, zoom * -width / 2.0f);
 		translate(1f / zoom, -PROJECTOR_RATIO / zoom);
+	}
+
+	public static void main(String[] args) {
+		PApplet.main(MorphingSocietyApplication.class.getName());
 	}
 
 }
