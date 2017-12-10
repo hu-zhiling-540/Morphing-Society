@@ -34,13 +34,12 @@ public class StrangerLandApp extends PApplet {
 		}
 		int population = society.size();
 		for (Body b : pTracker.getPeople().values()) {
-			Person s = society.get(b.getId());
-			if (s != null) {
-				s.update(b);
-				s.draw(population);
+			Person p = society.get(b.getId());
+			if (p != null) {
+				p.update(b);
+				p.draw(population);
 			}
 		}
-
 	}
 
 	public void setup() {
@@ -62,7 +61,6 @@ public class StrangerLandApp extends PApplet {
 
 	public void settings() {
 		createWindow(true, true, .5f);
-
 	}
 
 	public void createWindow(boolean useP2D, boolean isFullscreen, float windowsScale) {
@@ -84,8 +82,6 @@ public class StrangerLandApp extends PApplet {
 	// use lower numbers to zoom out (show more of the world)
 	// zoom of 1 means that the window is 2 meters wide and appox 1 meter tall.
 	public void setScale(float zoom) {
-		// width - 960
-		// height - 540
 		scaleX = zoom * width / 2.0f;
 		scaleY = zoom * -width / 2.0f;
 		scale(zoom * width / 2.0f, zoom * -width / 2.0f);
