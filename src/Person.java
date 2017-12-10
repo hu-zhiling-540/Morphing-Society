@@ -6,12 +6,10 @@ import processing.core.PConstants;
 import processing.core.PShape;
 import processing.core.PVector;
 
-public class Shape {
+public class Person {
 
 	Body body;
 	PApplet app;
-	// int color;
-	float scaleX, scaleY;
 
 	PVector head, spineBase;
 
@@ -35,7 +33,7 @@ public class Shape {
 	float mx[] = new float[num];
 	float my[] = new float[num];
 
-	HelloWorld[] hws = new HelloWorld[2];
+	WorldMsg[] hws = new WorldMsg[2];
 	int totalHws = 0;
 	// potential shapes represented by fixed size of vertices
 	PVector[] heptagon;
@@ -56,10 +54,8 @@ public class Shape {
 	public static final Color pureGreen = new Color(0, 255, 0);
 	public static final Color pureBlue = new Color(0, 0, 255);
 
-	public Shape(PApplet app, float sx, float sy) {
+	public Person(PApplet app) {
 		this.app = app;
-		this.scaleX = sx;
-		this.scaleY = sy;
 		timeBorn = System.currentTimeMillis();
 
 		heptagon = setupPolygon(7, maxSize, mass);
@@ -123,8 +119,8 @@ public class Shape {
 
 	public void draw(int state) {
 
-		// // Initialize one drop
-		hws[totalHws] = new HelloWorld(app, centerX, centerY, scaleX, scaleY);
+		// Initialize one drop
+		hws[totalHws] = new WorldMsg(app, centerX, centerY);
 
 		// Increment totalDrops
 		totalHws++;
@@ -249,11 +245,11 @@ public class Shape {
 	}
 
 	public void speedUp() {
-	
+
 	}
 
 	public void speedDown() {
-	
+
 	}
 
 	public void jiggle(float speed) {
@@ -262,34 +258,4 @@ public class Shape {
 		x = PApplet.constrain(x, 0, app.width);
 		y = PApplet.constrain(y, 0, app.height);
 	}
-
-	public void traces() {
-		app.noStroke();
-		// app.fill(255, 153);
-		int which = app.frameCount % num;
-		mx[which] = centerX;
-		my[which] = centerY;
-		for (int i = 0; i < num; i++) {
-			// which+1 is the smallest (the oldest in the array)
-			int index = (which + 1 + i) % num;
-			app.translate(mx[index], my[index]);
-			PShape s = app.createShape(PApplet.ELLIPSE, mx[index], my[index], i, i);
-			s.scale(.01f, .01f);
-	
-			// create this shape in its parent pApplet
-			// app.shape(s);
-			// PShape s = app.createShape();
-			// s.rotate(rotSpeed);
-			// s.beginShape();
-			// s.scale(.009f, .009f);
-			// // draw relative to the center of this person
-			// app.translate(mx[index], my[index]);
-			// for (PVector v : currShape) // drawing shape
-			// s.vertex(v.x, v.y);
-			// s.endShape(PApplet.CLOSE);
-			// // create this shape in its parent pApplet
-			app.shape(s);
-		}
-	}
-
 }

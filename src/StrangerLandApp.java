@@ -7,14 +7,15 @@ import processing.core.PApplet;
  * @author Zhiling
  *
  */
-public class MorphingSocietyApplication extends PApplet {
+public class StrangerLandApp extends PApplet {
 
 	KinectBodyDataProvider kinectReader;
-	public static float PROJECTOR_RATIO = 1080f / 1920.0f;
-	HashMap<Long, Shape> society = new HashMap<Long, Shape>();
-	PersonTracker pTracker = new PersonTracker();
 
-	float scaleX, scaleY;
+	public static float PROJECTOR_RATIO = 1080f / 1920.0f;
+	static float scaleX, scaleY;
+
+	HashMap<Long, Person> society = new HashMap<Long, Person>();
+	PersonTracker pTracker = new PersonTracker();
 
 	public void draw() {
 		setScale(.5f);
@@ -26,14 +27,14 @@ public class MorphingSocietyApplication extends PApplet {
 
 		pTracker.update(bodyData);
 		for (Long id : pTracker.getEnters()) {
-			society.put(id, new Shape(this, scaleX, scaleY));
+			society.put(id, new Person(this));
 		}
 		for (Long id : pTracker.getExits()) {
 			society.remove(id);
 		}
 		int population = society.size();
 		for (Body b : pTracker.getPeople().values()) {
-			Shape s = society.get(b.getId());
+			Person s = society.get(b.getId());
 			if (s != null) {
 				s.update(b);
 				s.draw(population);
@@ -60,7 +61,7 @@ public class MorphingSocietyApplication extends PApplet {
 	}
 
 	public void settings() {
-		createWindow(true, false, .5f);
+		createWindow(true, true, .5f);
 
 	}
 
@@ -89,11 +90,10 @@ public class MorphingSocietyApplication extends PApplet {
 		scaleY = zoom * -width / 2.0f;
 		scale(zoom * width / 2.0f, zoom * -width / 2.0f);
 		translate(1f / zoom, -PROJECTOR_RATIO / zoom);
-//		System.out.println("zoom" + (-PROJECTOR_RATIO / zoom));
 	}
 
 	public static void main(String[] args) {
-		PApplet.main(MorphingSocietyApplication.class.getName());
+		PApplet.main(StrangerLandApp.class.getName());
 	}
 
 }
