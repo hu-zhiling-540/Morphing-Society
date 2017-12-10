@@ -10,11 +10,10 @@ public class WorldMsg {
 	float rad = .5f;
 	float speed;
 	int color;
-
 	String s1 = "HELLO WORLD";
 	String s2 = "ACESS DENIED";
 
-	public WorldMsg(PApplet app, float x, float y) {
+	public WorldMsg(PApplet app, float x, float y, float rad) {
 		this.app = app;
 
 		textX = x;
@@ -25,26 +24,16 @@ public class WorldMsg {
 		this.cx = x;
 		this.cy = y;
 
-		// rad = .2f;
+		this.rad = rad;
 		color = app.color(32, 194, 14);
-		font = app.createFont("Monospace", 20);
+		font = app.createFont("Monospace", 15);
 	}
 
 	void update() {
 		this.textY -= speed;
 	}
 
-	// Check if it hits the bottom
-	boolean comeAcross() {
-		// If we go a little beyond the bottom
-		if (textY < -2) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	void draw() {
+	void incoming() {
 
 		app.fill(color);
 		app.textFont(font);
@@ -57,19 +46,27 @@ public class WorldMsg {
 		float tx = textX;
 		float ty = 0;
 		for (int i = 0; i < s1.length(); i++) {
-			app.text(s1.charAt(i), tx, ty);
 			ty += app.textAscent();
-			if (ty + 25 > (cy - textY) * StrangerLandApp.scaleY)
+			if (ty + rad * 2 > (cy - textY) * StrangerLandApp.scaleY)
 				break;
+			app.text(s1.charAt(i), tx, ty);
+
 		}
 		app.popMatrix();
 
+	}
+
+	void outgoing(boolean isFamiliar) {
+		String msg = s2;
+		if (isFamiliar)
+			msg = s1;
 		app.pushMatrix();
 		app.translate(textX, cy);
-		ty = cy + 50f;
+		float tx = textX;
+		float ty = cy + rad * 5;
 		app.scale(1 / StrangerLandApp.scaleX, 1 / StrangerLandApp.scaleY); // scale back
-		for (int i = 0; i < s2.length(); i++) {
-			app.text(s2.charAt(i), tx, ty);
+		for (int i = 0; i < msg.length(); i++) {
+			app.text(msg.charAt(i), tx, ty);
 			ty += app.textAscent();
 		}
 		app.popMatrix();
