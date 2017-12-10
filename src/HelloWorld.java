@@ -6,35 +6,35 @@ public class HelloWorld {
 
 	PFont font;
 	float x, y;
-	float rad;
+	float rad = 5;
 	float speed;
 	int color;
 
 	String s1 = "Access Denied";
-	String s2 = "Hello World";
+	String s2 = "HELLO WORLD";
 
-	public HelloWorld(PApplet app, float x, float y, float mass) {
+	public HelloWorld(PApplet app) {
 		this.app = app;
-		this.x = x;
-		this.y = y;
+		this.x = app.random(-2, 2);
+		this.y = 2;
 		// app.width = 1440
-		speed = (float) (app.random(1, app.width) * 0.001);
-		rad = (float) (mass * 0.01);
+		speed = (float) (0.05);
+		// rad = (float) (mass * 0.01);
 		color = app.color(32, 194, 14);
-		font = app.createFont("Monospace", 5);
+		font = app.createFont("Monospace", 10);
 		// y = app.random(app.height);
 		// x = -rad * 2;// start off the screen
 	}
 
 	void move() {
 		// Increment by speed
-		x += speed;
+		y -= speed;
 	}
 
 	// Check if it hits the bottom
 	boolean reachedBottom() {
 		// If we go a little beyond the bottom
-		if (x > app.height) {
+		if (y < -10) {
 			return true;
 		} else {
 			return false;
@@ -45,11 +45,19 @@ public class HelloWorld {
 		// Display the drop
 		app.fill(color);
 		// app.noStroke();
-		app.stroke(1);
+		// app.stroke(10);
 		app.pushMatrix();
 		app.translate(x, y);
 		app.scale(0.01f, -0.01f);
-		app.text(s2, x, y);
+		app.textFont(font);
+		app.textAlign(PApplet.CENTER);
+		float tx = x;
+		float ty = y;
+		for (int i = 0; i < s2.length(); i++) {
+			app.text(s2.charAt(i), tx, ty);
+			System.out.println("w:" + app.textWidth(s2.charAt(i)));
+			ty += app.textAscent();
+		}
 		app.popMatrix();
 	}
 
@@ -58,6 +66,6 @@ public class HelloWorld {
 		// Stop it from moving by setting speed equal to zero
 		speed = 0;
 		// Set the location to somewhere way off-screen
-		y = -1000;
+		y = 100;
 	}
 }

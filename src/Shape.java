@@ -26,8 +26,6 @@ public class Shape {
 	float aVelocity = 0;
 	float aAcceleration = 0;
 
-	// store the vertices that been lerped to
-	// ArrayList<PVector> morphSet = new ArrayList<PVector>();
 
 	// to store all the locations past by until meeting that married person
 	ArrayList<PVector> exTraces = new ArrayList<PVector>();
@@ -37,7 +35,7 @@ public class Shape {
 	float mx[] = new float[num];
 	float my[] = new float[num];
 
-	HelloWorld[] hws = new HelloWorld[10];
+	HelloWorld[] hws = new HelloWorld[20];
 	int totalHws = 0;
 	// potential shapes represented by fixed size of vertices
 	PVector[] heptagon;
@@ -175,7 +173,7 @@ public class Shape {
 	public void draw(int state) {
 
 		// Initialize one drop
-		hws[totalHws] = new HelloWorld(app, centerX, centerY, mass);
+		hws[totalHws] = new HelloWorld(app);
 
 		// Increment totalDrops
 		totalHws++;
@@ -201,26 +199,26 @@ public class Shape {
 		int color = app.color(r, g, b);
 		app.fill(color);
 
-		switch (state) {
-		case 1: // is alone
-			morph(heptagon); //
-			break;
-		case 2: // two people
-			morph(hextagon); //
-			break;
-		case 3: // three people
-			morph(pentagon);
-			break;
-		case 4: // four people
-			morph(square);
-			break;
-		case 5: // five people
-			morph(triangle);
-			break;
-		case 6: // six people
-			morph(circle);
-			break;
-		}
+//		switch (state) {
+//		case 1: // is alone
+//			morph(heptagon); //
+//			break;
+//		case 2: // two people
+//			morph(hextagon); //
+//			break;
+//		case 3: // three people
+//			morph(pentagon);
+//			break;
+//		case 4: // four people
+//			morph(square);
+//			break;
+//		case 5: // five people
+//			morph(triangle);
+//			break;
+//		case 6: // six people
+//			morph(circle);
+//			break;
+//		}
 
 	}
 
