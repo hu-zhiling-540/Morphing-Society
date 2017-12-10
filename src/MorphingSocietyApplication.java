@@ -14,17 +14,19 @@ public class MorphingSocietyApplication extends PApplet {
 	HashMap<Long, Shape> society = new HashMap<Long, Shape>();
 	PersonTracker pTracker = new PersonTracker();
 
+	float scaleX, scaleY;
+
 	public void draw() {
 		setScale(.5f);
-		// background(105, 105, 105);
 
-		background(0);
+		background(0); // black
 
 		KinectBodyData bodyData = kinectReader.getData();
 		// KinectBodyData bodyData = kinectReader.getMostRecentData();
+
 		pTracker.update(bodyData);
 		for (Long id : pTracker.getEnters()) {
-			society.put(id, new Shape(this));
+			society.put(id, new Shape(this, scaleX, scaleY));
 		}
 		for (Long id : pTracker.getExits()) {
 			society.remove(id);
@@ -46,19 +48,19 @@ public class MorphingSocietyApplication extends PApplet {
 		 * use this code to run your PApplet from data recorded by UPDRecorder
 		 */
 		try {
-			// kinectReader = new KinectBodyDataProvider("singlePersonTest.kinect", 1);
-			kinectReader = new KinectBodyDataProvider("fivePeople.kinect", 1);
+			kinectReader = new KinectBodyDataProvider("singlePersonTest.kinect", 1);
+			// kinectReader = new KinectBodyDataProvider("fivePeople.kinect", 1);
 		} catch (IOException e) {
 			System.out.println("Unable to create kinect producer");
 		}
 
 		// kinectReader = new KinectBodyDataProvider(8008);
 		kinectReader.start();
-		frameRate(10);
+		frameRate(5);
 	}
 
 	public void settings() {
-		createWindow(true, true, .25f);
+		createWindow(true, false, .5f);
 
 	}
 
@@ -81,7 +83,10 @@ public class MorphingSocietyApplication extends PApplet {
 	// use lower numbers to zoom out (show more of the world)
 	// zoom of 1 means that the window is 2 meters wide and appox 1 meter tall.
 	public void setScale(float zoom) {
-		System.out.println(zoom * width / 2.0f);
+		// width - 960
+		// height - 540
+		scaleX = zoom * width / 2.0f;
+		scaleY = zoom * -width / 2.0f;
 		scale(zoom * width / 2.0f, zoom * -width / 2.0f);
 		translate(1f / zoom, -PROJECTOR_RATIO / zoom);
 	}

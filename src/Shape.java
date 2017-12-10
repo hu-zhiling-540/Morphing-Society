@@ -11,6 +11,7 @@ public class Shape {
 	Body body;
 	PApplet app;
 	// int color;
+	float scaleX, scaleY;
 
 	PVector head, spineBase;
 
@@ -21,21 +22,20 @@ public class Shape {
 	float rotSpeed = (float) 0;
 	float decel = (float) 0.2; // deceleration
 	// float minSpeed = (float) 0.1;
-	float mass = 30; // radius
+	float mass = 20; // radius
 	// float angle = 0;
 	float aVelocity = 0;
 	float aAcceleration = 0;
-
 
 	// to store all the locations past by until meeting that married person
 	ArrayList<PVector> exTraces = new ArrayList<PVector>();
 	ArrayList<PVector> newTraces = new ArrayList<PVector>();
 
-	int num = 5;
+	int num = 10;
 	float mx[] = new float[num];
 	float my[] = new float[num];
 
-	HelloWorld[] hws = new HelloWorld[20];
+	HelloWorld[] hws = new HelloWorld[5];
 	int totalHws = 0;
 	// potential shapes represented by fixed size of vertices
 	PVector[] heptagon;
@@ -56,8 +56,10 @@ public class Shape {
 	public static final Color pureGreen = new Color(0, 255, 0);
 	public static final Color pureBlue = new Color(0, 0, 255);
 
-	public Shape(PApplet app) {
+	public Shape(PApplet app, float sx, float sy) {
 		this.app = app;
+		this.scaleX = sx;
+		this.scaleY = sy;
 		timeBorn = System.currentTimeMillis();
 
 		heptagon = setupPolygon(7, maxSize, mass);
@@ -67,8 +69,7 @@ public class Shape {
 		// pentagon = setupPolygon(5, maxSize, mass);
 		// square = setupPolygon(4, maxSize, mass);
 		// triangle = setupPolygon(3, maxSize, mass);
-		// initialization for vertices set
-		// initCircle();
+		initCircle();
 		currShape = new PVector[maxSize];
 		currShape = heptagon;
 	}
@@ -88,7 +89,7 @@ public class Shape {
 			// System.out.println(mass);
 			centerX = spineBase.x;
 			centerY = spineBase.y;
-			float newRad = head.dist(spineBase) * 30; // update radius
+			float newRad = head.dist(spineBase) * 20; // update radius
 			if (Math.abs(newRad - mass) >= 0.5) {
 				mass = newRad;
 				heptagon = setupPolygon(7, maxSize, mass);
@@ -110,20 +111,20 @@ public class Shape {
 
 	// ref: https://processing.org/examples/morph.html
 	public void morph(PVector[] nextShape) {
-		app.noStroke();
 		for (int i = 0; i < maxSize; i++) {
 			PVector v1 = nextShape[i];
 			// Get the next vertex we will draw to
 			PVector v2 = currShape[i];
 			// Lerp to the target
-			v2.lerp(v1, (float) 0.05);
+			v2.lerp(v1, (float) 0.1);
 		}
 		app.pushMatrix();
 		PShape s = app.createShape();
 		s.rotate(rotSpeed);
 		s.beginShape();
-		s.scale(.01f, .01f);
-
+		s.scale(.01f, -.01f);
+		s.stroke(255); // white outline
+		s.noFill();
 		// draw relative to the center of this person
 		app.translate(centerX, centerY);
 		for (PVector v : currShape) // drawing shape
@@ -172,8 +173,8 @@ public class Shape {
 
 	public void draw(int state) {
 
-		// Initialize one drop
-		hws[totalHws] = new HelloWorld(app);
+		// // Initialize one drop
+		hws[totalHws] = new HelloWorld(app, centerX, centerY, scaleX, scaleY);
 
 		// Increment totalDrops
 		totalHws++;
@@ -184,65 +185,40 @@ public class Shape {
 		}
 
 		// Move and display drops
-		for (int i = 0; i < totalHws; i++) { // New! We no longer move and display all drops, but rather only the
-												// “totalDrops” that are currently present in the game.
-			hws[i].move();
-			hws[i].display();
+		for (int i = 0; i < totalHws; i++) {
+			hws[i].update(centerX, centerY);
+			hws[i].draw();
 		}
 
-		// use frameCount and noise to change the red color component
-		float r = app.noise((float) (app.frameCount * 0.01)) * 255;
-		// use frameCount and modulo to change the green color component
-		float g = app.frameCount % 255;
-		// use frameCount and noise to change the blue color component
-		float b = 255 - app.noise((float) (1 + app.frameCount * 0.025)) * 255;
-		int color = app.color(r, g, b);
-		app.fill(color);
+		switch (state) {
+		case 1: // is alone
+			morph(heptagon); //
+			break;
+		case 2: // two people
+			morph(hextagon); //
+			break;
+		case 3: // three people
+			morph(pentagon);
+			break;
+		case 4: // four people
+			morph(square);
+			break;
+		case 5: // five people
+			morph(triangle);
+			break;
+		case 6: // six people
+			morph(circle);
+			break;
+		}
 
-//		switch (state) {
-//		case 1: // is alone
-//			morph(heptagon); //
-//			break;
-//		case 2: // two people
-//			morph(hextagon); //
-//			break;
-//		case 3: // three people
-//			morph(pentagon);
-//			break;
-//		case 4: // four people
-//			morph(square);
-//			break;
-//		case 5: // five people
-//			morph(triangle);
-//			break;
-//		case 6: // six people
-//			morph(circle);
-//			break;
-//		}
-
-	}
-
-	public void drawShape(ArrayList<PVector> vSet) {
-		app.noStroke();
-		app.pushMatrix();
-		PShape s = app.createShape();
-		// draw relative to the center of this person
-		app.translate(centerX, centerY);
-		s.beginShape();
-		s.scale(.05f, .05f);
-		// shape drawing
-		for (PVector v : vSet)
-			s.vertex(v.x, v.y);
-		s.endShape(PConstants.CLOSE);
-		// create this shape in its parent pApplet
-		app.shape(s);
-		app.popMatrix();
 	}
 
 	/**
 	 * Creates a circle using vectors pointing from center
 	 */
 	public void initCircle() {
+		circle = new PVector[maxSize];
+
 		int i = 0;
 		for (int angle = 0; angle < 3600; angle += 6) {
 			// Note we are not starting from 0 in order to match the
@@ -255,6 +231,18 @@ public class Shape {
 			// fill out morph ArrayList with blank PVectors
 			// morphSet.add(new PVector());
 		}
+	}
+
+	public void randomColor() {
+		// Display the drop
+		// app.fill(color);
+		// use frameCount and noise to change the red color component
+		float r = app.noise((float) (app.frameCount * 0.01)) * 255;
+		// use frameCount and modulo to change the green color component
+		float g = app.frameCount % 255;
+		// use frameCount and noise to change the blue color component
+		float b = 255 - app.noise((float) (1 + app.frameCount * 0.025)) * 255;
+		int color = app.color(r, g, b);
 	}
 
 	public PVector[] setupPolygon(int sides, int spokes, float rad) {
