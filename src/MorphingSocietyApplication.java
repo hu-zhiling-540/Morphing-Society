@@ -48,8 +48,8 @@ public class MorphingSocietyApplication extends PApplet {
 		 * use this code to run your PApplet from data recorded by UPDRecorder
 		 */
 		try {
-			kinectReader = new KinectBodyDataProvider("singlePersonTest.kinect", 1);
-			// kinectReader = new KinectBodyDataProvider("fivePeople.kinect", 1);
+			// kinectReader = new KinectBodyDataProvider("singlePersonTest.kinect", 1);
+			kinectReader = new KinectBodyDataProvider("fivePeople.kinect", 1);
 		} catch (IOException e) {
 			System.out.println("Unable to create kinect producer");
 		}
@@ -89,6 +89,7 @@ public class MorphingSocietyApplication extends PApplet {
 		scaleY = zoom * -width / 2.0f;
 		scale(zoom * width / 2.0f, zoom * -width / 2.0f);
 		translate(1f / zoom, -PROJECTOR_RATIO / zoom);
+//		System.out.println("zoom" + (-PROJECTOR_RATIO / zoom));
 	}
 
 	public static void main(String[] args) {

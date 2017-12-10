@@ -35,7 +35,7 @@ public class Shape {
 	float mx[] = new float[num];
 	float my[] = new float[num];
 
-	HelloWorld[] hws = new HelloWorld[5];
+	HelloWorld[] hws = new HelloWorld[2];
 	int totalHws = 0;
 	// potential shapes represented by fixed size of vertices
 	PVector[] heptagon;
@@ -63,12 +63,6 @@ public class Shape {
 		timeBorn = System.currentTimeMillis();
 
 		heptagon = setupPolygon(7, maxSize, mass);
-		// hextagon = setupPolygon(6, maxSize, mass);
-		// circle = new PVector[maxSize];
-		// circle = setupPolygon(0, maxSize, mass);
-		// pentagon = setupPolygon(5, maxSize, mass);
-		// square = setupPolygon(4, maxSize, mass);
-		// triangle = setupPolygon(3, maxSize, mass);
 		initCircle();
 		currShape = new PVector[maxSize];
 		currShape = heptagon;
@@ -101,14 +95,6 @@ public class Shape {
 		}
 	}
 
-	public void speedUp() {
-
-	}
-
-	public void speedDown() {
-
-	}
-
 	// ref: https://processing.org/examples/morph.html
 	public void morph(PVector[] nextShape) {
 		for (int i = 0; i < maxSize; i++) {
@@ -135,42 +121,6 @@ public class Shape {
 		app.popMatrix();
 	}
 
-	public void jiggle(float speed) {
-		float x = centerX + app.random(-1, 1) * speed;
-		float y = centerX + app.random(-1, 1) * speed;
-		x = PApplet.constrain(x, 0, app.width);
-		y = PApplet.constrain(y, 0, app.height);
-	}
-
-	public void traces() {
-		app.noStroke();
-		// app.fill(255, 153);
-		int which = app.frameCount % num;
-		mx[which] = centerX;
-		my[which] = centerY;
-		for (int i = 0; i < num; i++) {
-			// which+1 is the smallest (the oldest in the array)
-			int index = (which + 1 + i) % num;
-			app.translate(mx[index], my[index]);
-			PShape s = app.createShape(PApplet.ELLIPSE, mx[index], my[index], i, i);
-			s.scale(.01f, .01f);
-
-			// create this shape in its parent pApplet
-			// app.shape(s);
-			// PShape s = app.createShape();
-			// s.rotate(rotSpeed);
-			// s.beginShape();
-			// s.scale(.009f, .009f);
-			// // draw relative to the center of this person
-			// app.translate(mx[index], my[index]);
-			// for (PVector v : currShape) // drawing shape
-			// s.vertex(v.x, v.y);
-			// s.endShape(PApplet.CLOSE);
-			// // create this shape in its parent pApplet
-			app.shape(s);
-		}
-	}
-
 	public void draw(int state) {
 
 		// // Initialize one drop
@@ -186,7 +136,7 @@ public class Shape {
 
 		// Move and display drops
 		for (int i = 0; i < totalHws; i++) {
-			hws[i].update(centerX, centerY);
+			hws[i].update();
 			hws[i].draw();
 		}
 
@@ -296,6 +246,50 @@ public class Shape {
 		if (u < 0 || u > 1)
 			return null;
 		return new PVector(p1.x + t * b.x, p1.y + t * b.y);
+	}
+
+	public void speedUp() {
+	
+	}
+
+	public void speedDown() {
+	
+	}
+
+	public void jiggle(float speed) {
+		float x = centerX + app.random(-1, 1) * speed;
+		float y = centerX + app.random(-1, 1) * speed;
+		x = PApplet.constrain(x, 0, app.width);
+		y = PApplet.constrain(y, 0, app.height);
+	}
+
+	public void traces() {
+		app.noStroke();
+		// app.fill(255, 153);
+		int which = app.frameCount % num;
+		mx[which] = centerX;
+		my[which] = centerY;
+		for (int i = 0; i < num; i++) {
+			// which+1 is the smallest (the oldest in the array)
+			int index = (which + 1 + i) % num;
+			app.translate(mx[index], my[index]);
+			PShape s = app.createShape(PApplet.ELLIPSE, mx[index], my[index], i, i);
+			s.scale(.01f, .01f);
+	
+			// create this shape in its parent pApplet
+			// app.shape(s);
+			// PShape s = app.createShape();
+			// s.rotate(rotSpeed);
+			// s.beginShape();
+			// s.scale(.009f, .009f);
+			// // draw relative to the center of this person
+			// app.translate(mx[index], my[index]);
+			// for (PVector v : currShape) // drawing shape
+			// s.vertex(v.x, v.y);
+			// s.endShape(PApplet.CLOSE);
+			// // create this shape in its parent pApplet
+			app.shape(s);
+		}
 	}
 
 }
