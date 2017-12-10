@@ -41,8 +41,13 @@ public class Shape {
 		currShape = heptagon;
 	}
 
+	/**
+	 * Updates current location
+	 * @param centerX
+	 * @param centerY
+	 * @param rad
+	 */
 	public void update(float centerX, float centerY, float rad) {
-		// this.body = body;
 		this.centerX = centerX;
 		this.centerY = centerY;
 		this.rad = rad;
@@ -58,8 +63,11 @@ public class Shape {
 		triangle = setupPolygon(3, maxSize, rad);
 	}
 
+	/**
+	 * Draws based on current population 
+	 * @param state
+	 */
 	public void draw(int state) {
-
 		switch (state) {
 		case 1: // is alone
 			morph(heptagon); //
@@ -104,7 +112,7 @@ public class Shape {
 		s.beginShape();
 		s.scale(.01f, -.01f);
 		s.stroke(255); // white outline
-		s.fill(0); // non-transparent
+		s.fill(1, 100); // transparent
 		// draw relative to the center of this person
 		app.translate(centerX, centerY);
 		for (PVector v : currShape) // drawing shape
@@ -197,11 +205,11 @@ public class Shape {
 	}
 
 	public void speedUp() {
-
+		decel += 0.002;
 	}
 
 	public void speedDown() {
-
+		decel -= 0.001;
 	}
 
 }

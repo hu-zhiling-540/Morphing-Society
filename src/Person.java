@@ -25,7 +25,13 @@ public class Person {
 		inMsg = new WorldMsg[3];
 	}
 
-	public void update(Body body) {
+	/**
+	 * Updates current data
+	 * 
+	 * @param body
+	 * @param newEnter
+	 */
+	public void update(Body body, boolean newEnter) {
 
 		this.body = body;
 
@@ -40,10 +46,17 @@ public class Person {
 			if (Math.abs(newRad - mass) >= 0.5)
 				mass = newRad;
 		}
-		
+
 		myShape.update(centerX, centerY, mass);
+		if (newEnter)
+			myShape.speedUp();
 	}
 
+	/**
+	 * Calls on two draw methods
+	 * 
+	 * @param population
+	 */
 	public void draw(int population) {
 
 		outMsg = new WorldMsg(app, centerX, centerY, mass);
@@ -71,6 +84,7 @@ public class Person {
 
 	}
 
+	// not used yet
 	public void randomColor() {
 		// Display the drop
 		// app.fill(color);
@@ -83,6 +97,7 @@ public class Person {
 		int color = app.color(r, g, b);
 	}
 
+	// not used yet
 	public void jiggle(float speed) {
 		float x = centerX + app.random(-1, 1) * speed;
 		float y = centerX + app.random(-1, 1) * speed;

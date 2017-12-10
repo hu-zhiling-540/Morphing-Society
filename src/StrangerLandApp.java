@@ -24,9 +24,10 @@ public class StrangerLandApp extends PApplet {
 
 		KinectBodyData bodyData = kinectReader.getData();
 		// KinectBodyData bodyData = kinectReader.getMostRecentData();
-
+		boolean newEnter = false;
 		pTracker.update(bodyData);
 		for (Long id : pTracker.getEnters()) {
+			newEnter = true;
 			society.put(id, new Person(this));
 		}
 		for (Long id : pTracker.getExits()) {
@@ -36,14 +37,13 @@ public class StrangerLandApp extends PApplet {
 		for (Body b : pTracker.getPeople().values()) {
 			Person p = society.get(b.getId());
 			if (p != null) {
-				p.update(b);
+				p.update(b, newEnter);
 				p.draw(population);
 			}
 		}
 	}
 
 	public void setup() {
-
 		/*
 		 * use this code to run your PApplet from data recorded by UPDRecorder
 		 */
@@ -56,7 +56,6 @@ public class StrangerLandApp extends PApplet {
 
 		// kinectReader = new KinectBodyDataProvider(8008);
 		kinectReader.start();
-		frameRate(5);
 	}
 
 	public void settings() {

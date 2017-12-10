@@ -13,6 +13,7 @@ public class WorldMsg {
 	String s1 = "HELLO WORLD";
 	String s2 = "ACESS DENIED";
 
+	
 	public WorldMsg(PApplet app, float x, float y, float rad) {
 		this.app = app;
 
@@ -29,12 +30,17 @@ public class WorldMsg {
 		font = app.createFont("Monospace", 15);
 	}
 
+	/**
+	 * Updates the speed for message droping
+	 */
 	void update() {
 		this.textY -= speed;
 	}
 
+	/**
+	 * Displays the incoming message
+	 */
 	void incoming() {
-
 		app.fill(color);
 		app.textFont(font);
 		app.textAlign(PApplet.CENTER);
@@ -56,6 +62,10 @@ public class WorldMsg {
 
 	}
 
+	/**
+	 * Displays the outgoing message
+	 * @param isFamiliar
+	 */
 	void outgoing(boolean isFamiliar) {
 		String msg = s2;
 		if (isFamiliar)
