@@ -15,3 +15,5 @@ X One's trails (fixed size array)
 ☐  ★ Quaternation?
 
 √ dropping messages
+
+☐ messages array (meaning???)
