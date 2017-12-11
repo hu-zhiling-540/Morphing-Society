@@ -8,7 +8,7 @@
 
 X One's trails (fixed size array) 
 
-☐ Shrink and resume rate for individual shape affected by other's approaching
+? Shrink and resume rate for individual shape affected by new enters and exits
 
 √ Rotation (change over time)
 
