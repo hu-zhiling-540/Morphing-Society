@@ -11,7 +11,6 @@ public class ECG {
 	float lastY = 0;
 	float motionY = 0;
 	float motionX = 2;
-	// float fx;
 
 	ArrayList<PVector> ecgTrails;
 	int maxSize = 20;

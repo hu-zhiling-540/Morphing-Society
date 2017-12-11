@@ -17,7 +17,7 @@ public class Shape {
 	long timeBorn;
 
 	float rotSpeed = (float) 0;
-	float decel = 0.3f; // deceleration
+	float decel = 0.2f; // deceleration
 	float minSpeed = 0.01f;
 	float rad = 20; // radius
 
@@ -30,7 +30,7 @@ public class Shape {
 	PVector[] circle;
 	PVector[] currShape;
 
-	private final int maxSize = 600; // fixed count of vertices
+	private final int maxSize = 100; // fixed count of vertices
 
 	public Shape(PApplet app) {
 		this.app = app;
@@ -108,21 +108,22 @@ public class Shape {
 			// Lerp to the target
 			v2.lerp(v1, (float) 0.5);
 		}
+
+		app.stroke(255); // white outline
+		app.strokeWeight(1);
+		app.fill(1, 100); // transparent
 		app.pushMatrix();
-		PShape s = app.createShape();
-		s.rotate(rotSpeed);
-		s.beginShape();
-		s.scale(.01f, -.01f);
-		s.stroke(255); // white outline
-		s.strokeWeight(1);
-		s.fill(1, 100); // transparent
-		// draw relative to the center of this person
 		app.translate(centerX, centerY);
+		app.beginShape();
+
+		app.rotate(rotSpeed);
+		app.scale(.01f, -.01f);
+		// draw relative to the center of this person
 		for (PVector v : currShape) // drawing shape
-			s.vertex(v.x, v.y);
-		s.endShape(PApplet.CLOSE);
+			app.vertex(v.x, v.y);
+		app.endShape(PApplet.CLOSE);
 		// create this shape in its parent pApplet
-		app.shape(s);
+		// app.shape(s);
 		app.popMatrix();
 	}
 
@@ -133,11 +134,11 @@ public class Shape {
 		circle = new PVector[maxSize];
 
 		int i = 0;
-		for (int angle = 0; angle < 3600; angle += 6) {
+		for (int angle = 0; angle < 3600; angle += 36) {
 			// Note we are not starting from 0 in order to match the
 			// path of a circle.
 			PVector v = PVector.fromAngle(PApplet.radians(angle - 135));
-			v.mult(40);
+			v.mult(rad);
 			// crclSet.add(v);
 			circle[i] = v;
 			i++;
