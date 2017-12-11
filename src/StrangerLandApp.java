@@ -22,9 +22,9 @@ public class StrangerLandApp extends PApplet {
 
 		background(0); // black
 
-		setScale(.5f);
 		ecg.draw();
 
+		setScale(.5f);
 
 		KinectBodyData bodyData = kinectReader.getData();
 		// KinectBodyData bodyData = kinectReader.getMostRecentData();

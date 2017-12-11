@@ -6,11 +6,13 @@ import processing.core.PVector;
 public class ECG {
 
 	PApplet app;
-	int x = 0;
-	float py = 0;
-	float fx;
+
+	int currX = 0;
+	float lastY = 0;
+	// float fx;
+
 	ArrayList<PVector> ecgTrails;
-	PVector pos;
+	int maxSize = 15;
 
 	public ECG(PApplet app) {
 		this.app = app;
@@ -22,38 +24,32 @@ public class ECG {
 	}
 
 	void draw() {
-//		
-//		int trailLen = 0;
-//		x += 5;
-//		x %= app.width;
-//		float fx = py + app.random(-80, 80);
-//		pos = new PVector();
-		
-		app.pushMatrix();
-		// app.frameRate(1);
-		app.translate(-1f / 0.5f, StrangerLandApp.PROJECTOR_RATIO / 0.5f);
-		app.scale(1 / StrangerLandApp.scaleX, 1 / StrangerLandApp.scaleY); // scale back
+		// app.pushMatrix();
+		// app.translate(-1f / 0.5f, StrangerLandApp.PROJECTOR_RATIO / 0.5f);
+		// app.scale(1 / StrangerLandApp.scaleX, 1 / StrangerLandApp.scaleY);
 
-		app.noStroke();
-		// app.fill(0, 0, 0, 15);
-		app.fill(255, 25);
-		app.rect(0, 0, app.width, app.height);
 		app.translate(0, app.height / 2);
-		x += 5;
-		x %= app.width;
-		float fx = py + app.random(-80, 80);
-		// app.strokeWeight(app.random(1, 2));
-		app.stroke(255, 10, 10);
-		// app.noFill();
-		app.line(x - 5, py, x, fx);
-		if (py > app.height / 2)
-			py = app.height / 2;
-		if (py < -app.height / 2)
-			py = -app.height / 2;
-		// System.out.println(app.frameRate);
-		app.popMatrix();
+		int trailLen = 0;
+		currX += 5;
+		currX %= app.width;
+		float currY = lastY + app.random(-80, 80);
+		ecgTrails.add(new PVector(currX, currY));
 
-		// app.translate(0, -app.height / 2); // translate back
+		trailLen = ecgTrails.size() - 2;
+		if (trailLen >= 1) {
+			for (int i = 0; i < trailLen; i++) {
+				PVector currentTrail = ecgTrails.get(i);
+				PVector previousTrail = ecgTrails.get(i + 1);
+				app.strokeWeight(app.random(1, 2));
+				app.stroke(255 * i / trailLen, 0, 0);
+				app.line(currentTrail.x, currentTrail.y, previousTrail.x, previousTrail.y);
+			}
+			if (trailLen >= maxSize)
+				ecgTrails.remove(0);
+		}
+		// app.popMatrix();
+
+		app.translate(0, -app.height / 2); // translate back
 	}
 
 }

@@ -22,7 +22,7 @@ public class Person {
 		this.app = app;
 		timeBorn = System.currentTimeMillis();
 		myShape = new Shape(app);
-		inMsg = new WorldMsg[3];
+		inMsg = new WorldMsg[4];
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class Person {
 		}
 		// update outgoing message (will change after 10 seconds)
 		long currTime = System.currentTimeMillis();
-		if (Math.abs(currTime - timeBorn) > 10000)
+		if (Math.abs(currTime - timeBorn) > 15000)
 			outMsg.outgoing(true);
 		else
 			outMsg.outgoing(false);
@@ -83,6 +83,10 @@ public class Person {
 		myShape.draw(population);
 
 	}
+
+//	public int motion() {
+//
+//	}
 
 	// not used yet
 	public void randomColor() {
