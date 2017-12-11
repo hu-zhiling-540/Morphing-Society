@@ -16,11 +16,15 @@ public class StrangerLandApp extends PApplet {
 
 	HashMap<Long, Person> society = new HashMap<Long, Person>();
 	PersonTracker pTracker = new PersonTracker();
+	ECG ecg = new ECG(this);
 
 	public void draw() {
-		setScale(.5f);
 
 		background(0); // black
+
+		setScale(.5f);
+		ecg.draw();
+
 
 		KinectBodyData bodyData = kinectReader.getData();
 		// KinectBodyData bodyData = kinectReader.getMostRecentData();
@@ -60,6 +64,7 @@ public class StrangerLandApp extends PApplet {
 
 	public void settings() {
 		createWindow(true, true, .5f);
+
 	}
 
 	public void createWindow(boolean useP2D, boolean isFullscreen, float windowsScale) {

@@ -43,6 +43,7 @@ public class Shape {
 
 	/**
 	 * Updates current location
+	 * 
 	 * @param centerX
 	 * @param centerY
 	 * @param rad
@@ -64,7 +65,8 @@ public class Shape {
 	}
 
 	/**
-	 * Draws based on current population 
+	 * Draws based on current population
+	 * 
 	 * @param state
 	 */
 	public void draw(int state) {
@@ -112,6 +114,7 @@ public class Shape {
 		s.beginShape();
 		s.scale(.01f, -.01f);
 		s.stroke(255); // white outline
+		s.strokeWeight(1);
 		s.fill(1, 100); // transparent
 		// draw relative to the center of this person
 		app.translate(centerX, centerY);
