@@ -57,14 +57,14 @@ public class StrangerLandApp extends PApplet {
 		/*
 		 * use this code to run your PApplet from data recorded by UPDRecorder
 		 */
-		try {
-			// kinectReader = new KinectBodyDataProvider("exitTest.kinect", 2);
-			kinectReader = new KinectBodyDataProvider("fivePeople.kinect", 3);
-		} catch (IOException e) {
-			System.out.println("Unable to create kinect producer");
-		}
+		// try {
+		// // kinectReader = new KinectBodyDataProvider("exitTest.kinect", 2);
+		// kinectReader = new KinectBodyDataProvider("fivePeople.kinect", 3);
+		// } catch (IOException e) {
+		// System.out.println("Unable to create kinect producer");
+		// }
 
-		// kinectReader = new KinectBodyDataProvider(8008);
+		kinectReader = new KinectBodyDataProvider(8008);
 		kinectReader.start();
 	}
 

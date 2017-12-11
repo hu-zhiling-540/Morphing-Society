@@ -42,7 +42,7 @@ public class ECG {
 			for (int i = 0; i < trailLen; i++) {
 				PVector currentTrail = ecgTrails.get(i);
 				PVector previousTrail = ecgTrails.get(i + 1);
-				app.strokeWeight(app.random(1, 2));
+				app.strokeWeight(app.random(1, 3));
 				app.stroke(255 * i / trailLen, 0, 0);
 				if (currentTrail.x >= app.width - motionX)
 					break;

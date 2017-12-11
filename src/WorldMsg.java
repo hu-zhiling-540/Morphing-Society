@@ -73,7 +73,7 @@ public class WorldMsg {
 		app.pushMatrix();
 		app.translate(textX, cy);
 		float tx = textX;
-		float ty = cy + rad * 5;
+		float ty = cy + rad * app.random(5, 6);
 		app.scale(1 / StrangerLandApp.scaleX, 1 / StrangerLandApp.scaleY); // scale back
 		for (int i = 0; i < msg.length(); i++) {
 			app.text(msg.charAt(i), tx, ty);

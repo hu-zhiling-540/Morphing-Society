@@ -17,7 +17,7 @@ public class Shape {
 	long timeBorn;
 
 	float rotSpeed = (float) 0;
-	float decel = 0.2f; // deceleration
+	float decel = 0.3f; // deceleration
 	float minSpeed = 0.01f;
 	float rad = 20; // radius
 
