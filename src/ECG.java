@@ -9,30 +9,32 @@ public class ECG {
 
 	int currX = 0;
 	float lastY = 0;
+	float motionY = 0;
+	float motionX = 2;
 	// float fx;
 
 	ArrayList<PVector> ecgTrails;
-	int maxSize = 15;
+	int maxSize = 20;
 
 	public ECG(PApplet app) {
 		this.app = app;
 		ecgTrails = new ArrayList<PVector>();
 	}
 
-	void update() {
-
+	void update(float motion) {
+		this.motionY = motion;
 	}
 
 	void draw() {
-		// app.pushMatrix();
-		// app.translate(-1f / 0.5f, StrangerLandApp.PROJECTOR_RATIO / 0.5f);
-		// app.scale(1 / StrangerLandApp.scaleX, 1 / StrangerLandApp.scaleY);
+		app.pushMatrix();
+		app.translate(-1f / 0.5f, StrangerLandApp.PROJECTOR_RATIO / 0.5f);
+		app.scale(1 / StrangerLandApp.scaleX, 1 / StrangerLandApp.scaleY);
 
 		app.translate(0, app.height / 2);
 		int trailLen = 0;
-		currX += 5;
+		currX += motionX;
 		currX %= app.width;
-		float currY = lastY + app.random(-80, 80);
+		float currY = lastY + motionY;
 		ecgTrails.add(new PVector(currX, currY));
 
 		trailLen = ecgTrails.size() - 2;
@@ -42,14 +44,16 @@ public class ECG {
 				PVector previousTrail = ecgTrails.get(i + 1);
 				app.strokeWeight(app.random(1, 2));
 				app.stroke(255 * i / trailLen, 0, 0);
+				if (currentTrail.x >= app.width - motionX)
+					break;
 				app.line(currentTrail.x, currentTrail.y, previousTrail.x, previousTrail.y);
 			}
 			if (trailLen >= maxSize)
 				ecgTrails.remove(0);
 		}
-		// app.popMatrix();
+		app.popMatrix();
 
-		app.translate(0, -app.height / 2); // translate back
+		// app.translate(0, -app.height / 2); // translate back
 	}
 
 }

@@ -22,9 +22,9 @@ public class StrangerLandApp extends PApplet {
 
 		background(0); // black
 
-		ecg.draw();
-
 		setScale(.5f);
+
+		ecg.draw();
 
 		KinectBodyData bodyData = kinectReader.getData();
 		// KinectBodyData bodyData = kinectReader.getMostRecentData();
@@ -38,13 +38,19 @@ public class StrangerLandApp extends PApplet {
 			society.remove(id);
 		}
 		int population = society.size();
+		float motion = 0;
 		for (Body b : pTracker.getPeople().values()) {
 			Person p = society.get(b.getId());
 			if (p != null) {
 				p.update(b, newEnter);
 				p.draw(population);
+
+				// overall motion
+				if (motion + p.motion() < width / 2 && motion + p.motion() > -width / 2)
+					motion += p.motion();
 			}
 		}
+		ecg.update(motion);
 	}
 
 	public void setup() {
@@ -52,8 +58,8 @@ public class StrangerLandApp extends PApplet {
 		 * use this code to run your PApplet from data recorded by UPDRecorder
 		 */
 		try {
-			// kinectReader = new KinectBodyDataProvider("singlePersonTest.kinect", 1);
-			kinectReader = new KinectBodyDataProvider("fivePeople.kinect", 1);
+			// kinectReader = new KinectBodyDataProvider("exitTest.kinect", 2);
+			kinectReader = new KinectBodyDataProvider("fivePeople.kinect", 3);
 		} catch (IOException e) {
 			System.out.println("Unable to create kinect producer");
 		}

@@ -52,7 +52,7 @@ public class WorldMsg {
 		float ty = 0;
 		for (int i = 0; i < s1.length(); i++) {
 			ty += app.textAscent();
-			if (ty + rad * 2 > (cy - textY) * StrangerLandApp.scaleY)
+			if (ty + rad * 3 > (cy - textY) * StrangerLandApp.scaleY)
 				break;
 			app.text(s1.charAt(i), tx, ty);
 
