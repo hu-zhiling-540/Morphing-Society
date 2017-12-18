@@ -1,6 +1,12 @@
 import processing.core.PApplet;
 import processing.core.PVector;
 
+/**
+ * Represents a single person.
+ * 
+ * @author Zhiling
+ *
+ */
 public class Person {
 
 	Body body;
@@ -35,7 +41,7 @@ public class Person {
 	 * @param body
 	 * @param newEnter
 	 */
-	public void update(Body body, boolean newEnter) {
+	public void update(Body body, boolean newEnter, boolean newExit) {
 
 		this.body = body;
 
@@ -54,14 +60,18 @@ public class Person {
 				mass = newRad;
 		}
 
+		// if one person has been on the screen for more than two seconds
 		if (layover > 2) {
 			avgX = (avgX * (layover - 1) + centerX) / layover;
 			avgY = (avgY * (layover - 1) + centerY) / layover;
 		}
 
 		myShape.update(centerX, centerY, mass);
+
 		if (newEnter)
 			myShape.speedUp();
+		if (newExit)
+			myShape.speedDown();
 	}
 
 	/**
@@ -95,12 +105,17 @@ public class Person {
 
 	}
 
+	/**
+	 * Calculates motion increment for ECG curve
+	 * 
+	 * @return
+	 */
 	public float motion() {
 		return (float) (centerY - avgY) * 100f;
 		// return Math.max((float) (centerX - avgX), (float) (centerY - avgY)) * 100f;
 	}
 
-	// not used yet
+	// not implemented yet
 	public void randomColor() {
 		// Display the drop
 		// app.fill(color);
@@ -113,7 +128,7 @@ public class Person {
 		int color = app.color(r, g, b);
 	}
 
-	// not used yet
+	// not implemented yet
 	public void jiggle(float speed) {
 		float x = centerX + app.random(-1, 1) * speed;
 		float y = centerX + app.random(-1, 1) * speed;

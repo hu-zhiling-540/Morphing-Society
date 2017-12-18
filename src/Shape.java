@@ -1,8 +1,9 @@
 import processing.core.PApplet;
-import processing.core.PShape;
 import processing.core.PVector;
 
 /**
+ * Represents a signal shape that will morph from one polygon to another.
+ * Vertices of the polygon vary on a total number of people on the screen.
  * @author Zhiling
  *
  */
@@ -30,7 +31,7 @@ public class Shape {
 	PVector[] circle;
 	PVector[] currShape;
 
-	private final int maxSize = 100; // fixed count of vertices
+	private final int maxSize = 60; // fixed count of vertices
 
 	public Shape(PApplet app) {
 		this.app = app;
@@ -62,6 +63,7 @@ public class Shape {
 		pentagon = setupPolygon(5, maxSize, rad);
 		square = setupPolygon(4, maxSize, rad);
 		triangle = setupPolygon(3, maxSize, rad);
+		initCircle();
 	}
 
 	/**
@@ -132,18 +134,12 @@ public class Shape {
 	 */
 	public void initCircle() {
 		circle = new PVector[maxSize];
-
 		int i = 0;
-		for (int angle = 0; angle < 3600; angle += 36) {
-			// Note we are not starting from 0 in order to match the
-			// path of a circle.
+		for (int angle = 0; angle < 360; angle += 6) {
 			PVector v = PVector.fromAngle(PApplet.radians(angle - 135));
-			v.mult(rad);
-			// crclSet.add(v);
+			v.mult(rad / 2);
 			circle[i] = v;
 			i++;
-			// fill out morph ArrayList with blank PVectors
-			// morphSet.add(new PVector());
 		}
 	}
 
@@ -213,7 +209,8 @@ public class Shape {
 	}
 
 	public void speedDown() {
-		decel -= 0.001;
+		if (decel > minSpeed)
+			decel -= 0.001;
 	}
 
 }

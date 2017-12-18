@@ -1,29 +1,42 @@
 import java.util.ArrayList;
-
 import processing.core.PApplet;
 import processing.core.PVector;
 
+/**
+ * Displays ECG trace of overall vertical motion of the group of people.
+ * 
+ * @author Zhiling
+ *
+ */
 public class ECG {
 
-	PApplet app;
+	PApplet app; // parent app
 
-	int currX = 0;
+	int currX = 0; // initial x for drawing the trace
 	float lastY = 0;
 	float motionY = 0;
 	float motionX = 2;
 
-	ArrayList<PVector> ecgTrails;
-	int maxSize = 20;
+	int maxSize = 20; // n
+	ArrayList<PVector> ecgTrails; // a trail of last n motion markers
 
 	public ECG(PApplet app) {
 		this.app = app;
 		ecgTrails = new ArrayList<PVector>();
 	}
 
+	/**
+	 * Updates the newest motion increment
+	 * 
+	 * @param motion
+	 */
 	void update(float motion) {
 		this.motionY = motion;
 	}
 
+	/**
+	 * Draws on the background
+	 */
 	void draw() {
 		app.pushMatrix();
 		app.translate(-1f / 0.5f, StrangerLandApp.PROJECTOR_RATIO / 0.5f);

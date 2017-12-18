@@ -4,6 +4,8 @@ import java.util.HashMap;
 import processing.core.PApplet;
 
 /**
+ * The main application initiates the recorded demo or renders real-time data.
+ * 
  * @author Zhiling
  *
  */
@@ -31,10 +33,12 @@ public class StrangerLandApp extends PApplet {
 		boolean newEnter = false;
 		pTracker.update(bodyData);
 		for (Long id : pTracker.getEnters()) {
-			newEnter = true;
+			newEnter = true; // will speed up person
 			society.put(id, new Person(this));
 		}
+		boolean newExit = false;
 		for (Long id : pTracker.getExits()) {
+			newExit = true;
 			society.remove(id);
 		}
 		int population = society.size();
@@ -42,7 +46,7 @@ public class StrangerLandApp extends PApplet {
 		for (Body b : pTracker.getPeople().values()) {
 			Person p = society.get(b.getId());
 			if (p != null) {
-				p.update(b, newEnter);
+				p.update(b, newEnter, newExit);
 				p.draw(population);
 
 				// overall motion
@@ -57,14 +61,14 @@ public class StrangerLandApp extends PApplet {
 		/*
 		 * use this code to run your PApplet from data recorded by UPDRecorder
 		 */
-		 try {
-		 // kinectReader = new KinectBodyDataProvider("exitTest.kinect", 2);
-		 kinectReader = new KinectBodyDataProvider("fivePeople.kinect", 1);
-		 } catch (IOException e) {
-		 System.out.println("Unable to create kinect producer");
-		 }
+		try {
+			// kinectReader = new KinectBodyDataProvider("exitTest.kinect", 2);
+			kinectReader = new KinectBodyDataProvider("fivePeople.kinect", 1);
+		} catch (IOException e) {
+			System.out.println("Unable to create kinect producer");
+		}
 
-//		kinectReader = new KinectBodyDataProvider(8008);
+		// kinectReader = new KinectBodyDataProvider(8008);
 		kinectReader.start();
 	}
 

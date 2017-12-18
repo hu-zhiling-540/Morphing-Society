@@ -10,9 +10,9 @@ public class WorldMsg {
 	float rad = .5f;
 	float speed;
 	int color;
-	String s1 = "Hello";
-	String s2 = "你好";
-	
+	String s1 = "vvvvvvvvvv";
+	String s2 = "xxxxxxxxxx";
+
 	String[] inArr = new String[10];
 
 	public WorldMsg(PApplet app, float x, float y, float rad) {
