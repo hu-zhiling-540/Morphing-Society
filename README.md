@@ -3,18 +3,17 @@
 
 
 ## Features:
-√ Represent shapes from set of vertices
+√ Represent shapes from a set of vertices
 
-√ Morphing effects between vertices sets
+√ Morphing effects between vertices sets that represent polygons and circle
 
-X One's trails (fixed size array) 
-
-☐ Shrink and resume rate for individual shape affected by other's approaching
+√ Shrink and resume rate for individual shape affected by new enters and exits
 
 √ Rotation (change over time)
 
 √ incoming/outgoing messages
 
+√ ECG curve
 
 ## Project Statement:
 
@@ -28,5 +27,5 @@ The ECG curve runs continuously in the background is monitoring the overall vert
 Decay is inevitable. It can be slow or fast, but it is destinated to happen. Society is morphing. People come and go. Newcomers stir up the group of people, and soon they all return to calm. 
 
 
-## technical information
+## Technical Information
 Runs StrangerLandApp to initiate the demo.
