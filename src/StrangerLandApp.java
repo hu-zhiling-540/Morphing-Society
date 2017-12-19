@@ -73,7 +73,7 @@ public class StrangerLandApp extends PApplet {
 	}
 
 	public void settings() {
-		createWindow(true, true, .5f);
+		createWindow(true, false, .5f);
 
 	}
 
