@@ -1,5 +1,6 @@
 # Morphing-Society
 
+Author: Zhiling Hu
 
 
 ## Features:
@@ -29,3 +30,4 @@ Decay is inevitable. It can be slow or fast, but it is destinated to happen. Soc
 
 ## Technical Information
 Runs StrangerLandApp to initiate the demo.
+It works with at most six people. I recommend no one is present at first and people enters the screen one by one.
